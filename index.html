@@ -39,7 +39,9 @@
 </head>
 <body>
 
-<audio id="bdaySong" loop><source src="https://files.catbox.moe/qicr51.mp3" type="audio/mpeg"></audio>
+<audio id="bdaySong" loop preload="auto">
+    <source src="style.mp3" type="audio/mpeg">
+</audio>
 <canvas id="mainCanvas"></canvas>
 
 <div class="ui-layer">
@@ -117,17 +119,27 @@
     }
     type();
 
-    // Stage Transitions
+// This variable keeps track if the music has already started
+    let musicStarted = false;
+
     function initiateSequence() {
-        document.getElementById('bdaySong').play();
+        const music = document.getElementById('bdaySong');
+        
+        // Only play if it hasn't started yet to prevent "looping tunes"
+        if (!musicStarted) {
+            music.play().catch(e => console.log("Playback error:", e));
+            musicStarted = true;
+        }
+
         showStage(2);
         mode = 'decrypt';
+        
         let words = ["ANIMATOR", "DESIGNER", "CROCHET QUEEN", "ADITEE", "23"];
         let count = 0;
         let interval = setInterval(() => {
             document.getElementById('decryptWord').innerText = words[count % words.length];
             count++;
-            if(count > 15) {
+            if(count > 20) { // Increased count for a cooler effect
                 clearInterval(interval);
                 goToStage3();
             }
