@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aditee_23_Project_Final</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root { --p: #ff7eb9; --s: #7afcff; --bg: #0a0a0a; }
+        body, html { margin: 0; padding: 0; background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; overflow: hidden; height: 100%; }
+        .scene { display: none; height: 100vh; width: 100vw; flex-direction: column; justify-content: center; align-items: center; text-align: center; position: absolute; }
+        .active { display: flex; animation: fadeIn 1s forwards; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Stage 1: Terminal */
+        .terminal { font-family: monospace; background: #000; border: 1px solid #333; padding: 20px; text-align: left; }
+        .btn { background: var(--p); border: none; color: white; padding: 15px 30px; cursor: pointer; font-weight: bold; margin-top: 20px; border-radius: 5px; }
+
+        /* Stage 4: Crochet */
+        #crochet-canvas { border: 2px dashed #ff7eb9; cursor: pointer; }
+
+        /* Stage 6: Coupon */
+        #coupon {
+            background: linear-gradient(135deg, #ff7eb9 0%, #ff1177 100%);
+            padding: 30px; border-radius: 20px; border: 4px dashed white;
+            color: white; width: 300px; position: relative;
+        }
+        .gallery img { width: 120px; height: 120px; object-fit: cover; border: 2px solid white; margin: 5px; border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+    <audio id="bg-music" loop><source src="https://drive.google.com/file/d/1Q-4Dvsu16E53MI61_XW9RYN2pqMh2o3t/view?usp=drive_link" type="audio/mpeg"></audio>
+
+    <div id="s1" class="scene active">
+        <div class="terminal">
+            <p>> System Check...</p>
+            <p>> User identified: Aditee</p>
+            <p>> Subject: 23rd Birthday</p>
+            <button class="btn" onclick="start()">INITIATE RENDERING</button>
+        </div>
+    </div>
+
+    <div id="s2" class="scene">
+        <h1 id="decrypt-text" style="font-family: monospace; color: #0f0;">$#@!&%</h1>
+        <p>DECRYPTING YEAR 2026...</p>
+    </div>
+
+    <div id="s3" class="scene">
+        <canvas id="nebula"></canvas>
+        <div style="position:absolute; pointer-events:none;">
+            <h2>Aditee, you're a masterpiece.</h2>
+            <p>(Move your mouse/finger to stir the stars)</p>
+        </div>
+        <button class="btn" style="position:absolute; bottom: 50px;" onclick="toS4()">NEXT STAGE</button>
+    </div>
+
+    <div id="s4" class="scene">
+        <h2>Stitch a heart for your birthday</h2>
+        <canvas id="crochet-canvas"></canvas>
+        <button class="btn" id="crochet-btn" style="display:none;" onclick="toS5()">LOOK AT THE STATS</button>
+    </div>
+
+    <div id="s5" class="scene">
+        <h1>THE STYLE DASHBOARD</h1>
+        <div style="font-size: 1.2rem; background: rgba(255,255,255,0.1); padding: 20px; border-radius: 15px;">
+            <p>Animation Skill: ∞</p>
+            <p>Crochet Mastery: 100%</p>
+            <p>Aesthetic Vibe: Taylor Swift Level</p>
+            <p>Current Status: 23 & Glowing</p>
+        </div>
+        <button class="btn" onclick="toS6()">FINAL RENDER</button>
+    </div>
+
+    <div id="s6" class="scene" style="overflow-y: auto; padding-top: 50px;">
+        <h1>Happy 23rd Birthday, Aditee! ❤️</h1>
+        <div class="gallery">
+            <img src="https://ibb.co/6c1zb3wH" alt="You">
+            <img src="https://ibb.co/ds8mSwfs" alt="Me">
+            <img src="https://ibb.co/Myvk2h81" alt="Us">
+        </div>
+        <p>I love you more than code can calculate.</p>
+        
+        <div id="coupon">
+            <h3>🎟️ YASH'S LOVE COUPON</h3>
+            <hr>
+            <p><strong>REDEEMABLE FOR:</strong></p>
+            <p>30 mins of time to make love</p>
+            <p><small>*Expiring soon! Use it tonight!</small></p>
+        </div>
+        <button class="btn" onclick="downloadCoupon()">Download Coupon</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script>
+        const music = document.getElementById('bg-music');
+        
+        function next(curr, nextId) {
+            document.getElementById('s'+curr).classList.remove('active');
+            document.getElementById('s'+nextId).classList.add('active');
+        }
+
+        function start() {
+            music.play();
+            next(1, 2);
+            let count = 0;
+            const words = ["HAPPY", "BIRTHDAY", "ADITEE", "23", "LOVE"];
+            const interval = setInterval(() => {
+                document.getElementById('decrypt-text').innerText = words[count % words.length];
+                count++;
+                if(count > 15) {
+                    clearInterval(interval);
+                    next(2, 3);
+                    initNebula();
+                }
+            }, 200);
+        }
+
+        // Stage 3: Nebula
+        function initNebula() {
+            const canvas = document.getElementById('nebula');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            let particles = [];
+            for(let i=0; i<100; i++) particles.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, r: Math.random()*2});
+            function draw() {
+                ctx.fillStyle = 'rgba(10,10,10,0.2)'; ctx.fillRect(0,0,canvas.width, canvas.height);
+                ctx.fillStyle = '#7afcff';
+                particles.forEach(p => { ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill(); p.y -= 0.5; if(p.y < 0) p.y = canvas.height; });
+                requestAnimationFrame(draw);
+            }
+            draw();
+        }
+
+        function toS4() { next(3, 4); initCrochet(); }
+
+        // Stage 4: Crochet
+        function initCrochet() {
+            const canvas = document.getElementById('crochet-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 300; canvas.height = 300;
+            let stitches = 0;
+            canvas.addEventListener('click', (e) => {
+                ctx.strokeStyle = '#ff7eb9'; ctx.lineWidth = 4;
+                ctx.beginPath(); ctx.arc(e.offsetX, e.offsetY, 10, 0, Math.PI*1.5); ctx.stroke();
+                stitches++;
+                if(stitches > 10) document.getElementById('crochet-btn').style.display = 'block';
+            });
+        }
+
+        function toS5() { next(4, 5); }
+        function toS6() { 
+            next(5, 6); 
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+        }
+
+        function downloadCoupon() {
+            html2canvas(document.querySelector("#coupon")).then(canvas => {
+                let link = document.createElement('a');
+                link.download = 'Yash-Love-Coupon.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            });
+        }
+    </script>
+</body>
+</html>
